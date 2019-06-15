@@ -8,8 +8,9 @@ Collection of some codes written during the internship days at Bhaba Atomic Rese
 
 #### Blotted square well Fermi-type potential
 We worked on the potential of type $$V(e)=u_0\cdot \frac{1}{(1+e^{-r/a})}$$, here e is energy, r can be interpretted as radius of
-nucleus and a is the charge density. It's under peer review process for publication in American Physical Society. The preprint is available [here](https://arxiv.org/abs/1904.02284)
+nucleus and a is the charge density. It's under peer review process for publication in American Physical Society. The preprint is available [here](https://arxiv.org/abs/1904.02284). 
+![Blotted square well potential for r=2,a=0.5](https://github.com/t-gos7/Computational-Physics/blob/master/fermi.png)
 
 * [Half bound states in Fermi-type potential](https://github.com/t-gos7/Computational-Physics/blob/master/Fermi-half-bound-state.nb)
 * [Wave functions in Fermi-type potential](https://github.com/t-gos7/Computational-Physics/blob/master/FermiPotential-GaussHyperGeometricFunc.nb)
-![](https://github.com/t-gos7/Computational-Physics/blob/master/fermi.png)
+
