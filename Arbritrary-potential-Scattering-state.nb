@@ -1,0 +1,50 @@
+ClearAll["Global`*"]
+v0=5.;d=4.;a=2.;b=a;ee=4.;mid=1.;
+k[e_]:=Sqrt[e];
+f[x_]:=Which[-a<=x<-mid,v0,-mid<=x<mid, mid<=x<=b,v0]
+pot[x_]:=Which[x<-a, 0, -a<=x<=b, f[x], x>b, 0]
+Plot[{Re[pot[x]},{x,-2*d,2*d}, PlotRange->Full, Exclusions->False]
+sol = ParametricNDSolve[{sy''[x]+sy[x]*(e-pot[x])==0, sy[0]==1, sy'[0]==0, {sy},{x,-a,0},{e}];
+vol = ParametricNDSolve[{fy''[x]+fy[x]*(e-pot[x])==0,fy[0]==0, fy'[0]==1}, {fy}, {x,-a,0}, {e}];
+u[x_,e_]:=sy[e][x]/.sol;
+pu[x_,e_]=Evaluate[D[u[x,e],x]];
+v[x_,e_]:=fy[e][x]/.vol;
+pv = Evaluate[D[v[x,e],x]];
+sol1 = ParametricNDSolve[{sy1''[x]+sy1[x]*(e-pot[x])==0, sy1[0]==1, sy1'[0]==0, {sy1}, {x,0,b}, {e}];
+vol1 = ParametricNDSolve[{fy1''[x]+fy1[x]*(e-pot[x])==0, fy1[0]==0, fy1'[0]==1, {fy1}, {x,0,b}, {e}];
+u1[x_,e_]:=sy1[e][x]/.sol1;
+pu1[x_,e_]:=Evaluate[D[u1[x,e],x]];
+v1[x_,e_]:=fy1[e][x]/.vol1;
+pv1[x_,e_]:=Evaluate[D[v1[x,e],x]];
+
+al1[e_]:=k[e]*v[-a,e]+I*pv[-a,e];
+al2[e_]:=k[e]*u1[b,e]+I*pu1[b,e];
+al3[e_]:=k[e]*u[-a,e]+I*pu[-a,e];
+al4[e_]:=k[e]*v1[b,e]+I*pv1[b,e];
+al5[e_]:=k[e]*v[-a,e]+I*pv[-a,e];
+al6[e_]:=k[e]*u[-a,e]+I*pu[-a,e];
+
+bbya[e_]:=Exp[-2*I*k[e]*a]*(al1[e]*al2[e]-al3[e]*al4[e])/(al5[e]*al2[e]-al6[e]*al4[e])
+Plot[{0, Im[bbya[e]], Re[bbya[e]]}, {e,-10,10}];
+fbya[e_]:=Exp[-I*k[e]*(a+b)]*2*k[e]*(v1[b,e]*al2[e]-u1[b,e]*al4[e])/(al5[e]*al2[e]-al6[e]*al4[e])
+
+tran[e_]:=Abs[fbya[e]]^2;
+Plot[tran[e], {e,-5, v0+1}]
+LogPlot[tran[e], {e,-5, v0+1}]
+ee = e/.Findroot[tran[e]==1, {e,E^.25}]
+cbya[e_]:=-Exp[-I*k[e]*a]*2*k[e]*(k[e]*v1[b,e]+I*pv1[b,e])/(al5[e]*al2[e]-al6[e]*al4[e]);
+dbya[e_]:=Exp[-I*k[e]*a]*2*k[e]*(k[e]*u1[b,e]+I*pu1[b,e])/(al5[e]*al2[e]-al6[e]*al4[e]);
+
+psi[x_,e_]:=Which[x<-a, Exp[I*k[e]*x]+bbya[e]*Exp[-I*k[e]*x], -a<=x<0, cbya[e]*u[x,e]+dbya[e]*v[x,e], 0<=x<b, cbya[e]*u1[x,e]+dbya[e]*v1[x,e], x>=b, fbya[e]*Exp[I*k[e]*x]]
+psi[1.,ee]
+
+Plot[Re[psi[x,ee]],{x,-10,10}]
+Plot[Im[psi[x,ee]],{x,-10,10}]
+Plot[Abs[psi[x,10.]],{x,-10,10}]
+ 
+
+
+
+
+
+
