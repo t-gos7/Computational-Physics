@@ -1,0 +1,27 @@
+(* Finding reflection and transmission coeff. *)
+ClearAll["Global`*"]
+v0 = -5.; a = 2.; k[e_] := Sqrt[e]; q[e_] := Sqrt[e - v0];
+c[e_] := q[e]*Sin[q[e]*a] + k[e]*I*Cos[q[e]*a];
+d[e_] := k[e]*I*Sin[q[e]*a] - q[e]*Cos[q[e]*a];
+f1[e_] := k[e]*Sin[q[e]*a] - I*q[e]*Cos[q[e]*a];
+f2[e_] := I*q[e]*Sin[q[e]*a] + k[e]*Cos[q[e]*a];
+f3[e_] := k[e]*Sin[q[e]*a] + I*q[e]*Cos[q[e]*a];
+f4[e_] := -I*q[e]*Sin[q[e]*a] + k[e]*Cos[q[e]*a];
+up[e_] := c[e]*f1[e] + d[e]*f2[e];
+dn[e_] := c[e]*f3[e] + d[e]*f4[e];
+ref[e_] := Abs[up[e]/dn[e]]^2;
+en[n_] := (n^2*Pi^2/(2*a)^2) + v0;
+ref[en[4.]]
+ee = e /. FindRoot[ref[e] == 0, {e, .55}]
+(3^2*Pi^2/(2*a)^2) + v0
+bbya[e_] := up[e]/dn[e];
+fbyb[e_] := (2*k[e]*q[e]/(I*Sin[2*q[e]*a]*(q[e]^2 - k[e]^2)));
+(* LogPlot[ref[e],{e,-5,0}] *)
+tran[e_] := Abs[fbyb[e]*bbya[e]]^2;
+Plot[{1, tran[e]}, {e, 0, 10},PlotRange->Full]
+Plot[{ref[e] + tran[e]}, {e, 0, 5}, PlotStyle -> {Blue, Thick}]
+
+(* from Griffith's book *)
+(*var[e_]:=(k[e]^2+q[e]^2)/(2*q[e]*k[e]);
+x[e_]:=Cos[2*q[e]*a]-I*var[e]*Sin[2*q[e]*a];
+Plot[Abs[1/x[e]]^2,{e,0,5},PlotRange->Full]*)
