@@ -1,0 +1,7 @@
+Clear["Global`*"]
+x[n_,m_]:=Sqrt[(n+m+1)]/2 /; Abs[n-m]==1
+x[n_,m_]:=0/;Abs[n-m]!=1
+x[basissize_]:=Table[x[n,m],{n,0,basissize-1},{m,0,basissize-1}]
+x[4]//MatrixForm;
+h0[basissize_]:=DiagonalMatrix[Table[n + 1/2,{n, 0, basissize - 1}]]
+h0[4]//MatrixForm
