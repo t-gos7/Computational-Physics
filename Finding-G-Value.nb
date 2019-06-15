@@ -1,0 +1,39 @@
+ClearAll["Global`*"]
+u0 =7.63872; a = 2.; b = 1.; v0 = u0*(1 + Exp[-a/b]); d=5;
+v[x_] := -v0/(1 + Exp[(Abs[x] - a)/b]);
+Plot[v[x], {x, -12, 12}];
+p[e_] := b*Sqrt[-e]; q[e_] := I*b*Sqrt[e + v0];
+y[x_] := 1/(1 + Exp[(x - a)/b]);
+y0 = y[0];
+psi[x_, e_] := y[x]^(p[e])*(1 - y[x])^(q[e])*
+   Hypergeometric2F1[p[e] + q[e], p[e] + q[e] + 1, 2*p[e] + 1, y[x]];
+
+(* Here all function will vanish at infinity..to get discretisation 
+we need to consider the symmetry of the potential and eventually we 
+have even and odd functions. To find even fumctions we need the 
+derivative of psi(x,e) to be zero at x=0 and for odd wave functions 
+we have psi(x,e) zero at x=0*)
+
+dpsi[x_, e_] = D[psi[x, e], x];    (*derivative of psi(x,e) wrt x *)
+
+(*g[e_] := dpsi[0,e];  even wavefunction.. derivative at 0 is 0 for even wave 
+functions*)
+
+Plot[Re[dpsi[0., e]], {e, -u0, 0}];
+ev0 = e /. FindRoot[dpsi[0., e]== 0, {e, -4.1}];
+ev1 = e /. FindRoot[dpsi[0., e]==0, {e, -1.1}];
+f[e_] := psi[0, e];(*odd wavefunctions*)
+f[-4.];
+Plot[Re[f[e]], {e, -u0, 0}];
+odd0 = e /. FindRoot[f[e] == 0, {e, -2.}];
+odd1 = e /. FindRoot[f[e] == 0, {e, -0.5}];
+Plot[{Re[dpsi[0., e]], Re[f[e]]}, {e, -u0, 0}];
+Plot[{ev0, odd0, ev1, odd1, v[x]}, {x, -u0, u0}]
+psi0[x_]:=If[x>=0,psi[x,0],psi[Abs[x],0]];(* even extension *)
+Plot[Re[psi0[x]],{x,-d,d}]
+psi1[x_]:=If[x>=0,psi[x,0],-psi[Abs[x],0]];(* odd ext. *)
+Plot[Re[psi1[x]],{x,-5,5}];
+psi2[x_]:=If[x>=0,psi[x,ev1],psi[Abs[x],ev1]];
+Plot[Re[psi2[x]],{x,-d,d}];
+psi3[x_]:=If[x>=0,psi[x,odd1],-psi[Abs[x],odd1]];
+Plot[Re[psi3[x]],{x,-10,10}];
