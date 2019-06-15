@@ -1,0 +1,20 @@
+(* This program is for finding half bound states(HBS) for a given potential,
+here r is the radius of the nucleus, a is the charge density and V0 is the 
+Fermi-type square well potential we are working on. We have taken the potential 
+as V0 = u0*(1+Exp(-r/a)) *)
+
+
+r=3.;a=1.;
+v0[u0_]:=u0*(1+Exp[-r/a]);
+mu[u0_]:=I*Sqrt[v0[u0]]*a;
+y[x_]:=1/(1+Exp[(x-r)/a]);
+sy[x_,u0_]:=(1-y[x])^mu[u0]*Hypergeometric2F1[mu[u0],mu[u0]+1.,1.,y[x]]
+dsy[x_,u0_]=D[sy[x,u0],x];
+Plot[{Re[sy[0,u0]],Im[sy[0,u0]]},{u0,0,10}]
+FindRoot[sy[0,u0]==0,{u0,4.5}]
+Plot[{Re[dsy[0,u0]],Im[dsy[0,u0]]},{u0,0.1,15}]
+FindRoot[dsy[0,u0]==0,{u0,8.1}]
+al=r/a;
+bt=a*Sqrt[8.67189]
+g[al_,bt_]:=4*(1/Pi)*Sqrt[bt^2]*ArcSinh[Exp[al/2]]
+g[al,bt]
