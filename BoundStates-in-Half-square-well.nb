@@ -1,0 +1,12 @@
+(* Bound states in Half square well potential *)
+ClearAll["Global`*"]
+v0 = 18.; a = 1; k[e_] := Sqrt[e]; 
+q[e_] := Sqrt[v0 - e]; r = a*Sqrt[v0]
+(*Graphics[Line[{{0,1},{0,-v0},{a,-v0},{a,0},{a+2,0}}]]*)
+f[e_] := q[e]*a*Sin[k[e]*a] + k[e]*a*Cos[k[e]*a]
+Plot[f[e], {e, 0, v0}]
+e0 = e /. FindRoot[f[e] == 0, {e, 5.}]
+(*Another way*)
+Plot[{-kk*Cot[kk*a], Sqrt[r^2 - kk*kk]}, {kk, 0, 7}]
+kk0 = kk /. FindRoot[Tan[kk*a] == -kk/Sqrt[r^2 - kk*kk], {kk, 2.}]
+kk0*kk0
