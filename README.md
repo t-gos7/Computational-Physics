@@ -9,9 +9,9 @@ Collection of some codes written during the internship days at Bhaba Atomic Rese
 #### Blotted square well Fermi-type potential
 We worked on the potential of type 
 ```math
-V(e)=u_0 * (1+Exp[-r/a])^-1 
+V(x)=u_0 * (1+Exp[(x-r)/a])^-1 
 ```
-here e is energy, r can be interpretted as radius of nucleus and a is the charge density. It's under peer review process for publication in American Physical Society. The preprint is available [here](https://arxiv.org/abs/1904.02284). 
+here u0 is potential energy for x=0, r can be interpretted as radius of nucleus and a is the charge density. It's under peer review process for publication in American Physical Society. The preprint is available [here](https://arxiv.org/abs/1904.02284). 
 
 ![Blotted square well potential for r=2,a=0.5](https://github.com/t-gos7/Computational-Physics/blob/master/fermi.png)
 
